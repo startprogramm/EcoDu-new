@@ -1,51 +1,122 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,300;1,700&display=swap');
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
 /* Styling for the whole site */
 
-*{
-    font-family: "Poppins", sans-serif ;
+* {
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-ul{
+/* Keyframe Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+ul {
     list-style: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-button{
+button {
     cursor: pointer;
     border: none;
     background: none;
 }
 
-img{
+img {
     width: 100%;
 
 }
 
-.section-content{
+.section-content {
     margin: 0 auto;
     padding: 0 20px;
     max-width: max-content;
 }
 
-.section-title{
+.section-title {
     text-align: center;
     padding: 60px 0 100px;
     text-transform: uppercase;
     font-size: x-large;
 }
 
-.section-title::after{
+.section-title::after {
     content: "";
     width: 80px;
     height: 5px;
@@ -57,109 +128,150 @@ img{
 
 /* Navbar styling */
 
-header{
+header {
     background: #31473A;
     position: fixed;
     width: 100%;
     z-index: 5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-header .navbar{
+header .navbar {
     display: flex;
     padding: 20px;
     align-items: center;
     justify-content: space-between;
 }
-.navbar .nav-logo{
+
+.navbar .nav-logo {
     margin-left: 20px;
 }
 
-.navbar .nav-logo .logo-text{
+.navbar .nav-logo .logo-text {
     color: white;
     font-size: x-large;
     font-weight: bold;
 }
 
-.navbar .nav-menu{
+.navbar .nav-menu {
     display: flex;
     gap: 10px;
 }
 
-.navbar .nav-menu .nav-link{
+.navbar .nav-menu .nav-link {
     padding: 10px 18px;
     color: white;
     font-size: medium;
     border-radius: 20px;
-    transition: 0.3s ease;
-} 
-
-.navbar .nav-menu .nav-link:hover{
-    color: #31473A;
-    background-color: #EDF4F2;
+    transition: all 0.3s ease;
 }
 
-.navbar :where(#menu-close-button, #menu-open-button){
+.navbar .nav-menu .nav-link:hover {
+    color: #31473A;
+    background-color: #EDF4F2;
+    transform: translateY(-2px);
+}
+
+.navbar :where(#menu-close-button, #menu-open-button) {
     display: none;
 }
 
 /* Hero Section Styling*/
-.hero-section{
+.hero-section {
     background: #7C8363;
     min-height: 100vh;
 
 }
 
-.hero-section .section-content{
+.hero-section .section-content {
     display: flex;
     align-items: center;
     min-height: 100vh;
     color: #EDF4F2;
-    justify-content: space-between; 
+    justify-content: space-between;
+    animation: fadeIn 1s ease-in-out;
 }
 
-.hero-section .hero-details .title{
+.hero-section .hero-details .title {
     font-size: xx-large;
     color: #CADCAE;
-    font-family: "Miniver", sans-serif; 
+    font-family: "Miniver", sans-serif;
+    animation: slideInLeft 0.8s ease-out;
 }
 
-.hero-section .hero-details .subtitle{
+.hero-section .hero-details .subtitle {
     font-size: x-large;
     margin-top: 8px;
     max-width: 70%;
     font-weight: bolder;
+    animation: slideInLeft 1s ease-out;
 }
 
-.hero-section .hero-details .description{
+.hero-section .hero-details .description {
     max-width: 70%;
     margin: 24px 0 40px;
     font-size: medium;
+    animation: slideInLeft 1.2s ease-out;
 }
 
-.hero-section .hero-details .button{
+.hero-section .hero-details .button {
     padding: 10px 26px;
     border: 2px solid transparent;
     color: green;
     border-radius: 20px;
     background: greenyellow;
     font-weight: bolder;
-    transition: 0.5s ease;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideInLeft 1.4s ease-out;
+    box-shadow: 0 4px 15px rgba(173, 255, 47, 0.3);
 }
 
-.hero-section .hero-details .button:hover{
+.hero-section .hero-details .button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 128, 0, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
 
+.hero-section .hero-details .button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.hero-section .hero-details .button:hover {
     color: greenyellow;
     background: green;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 128, 0, 0.4);
 }
 
 .hero-section .hero-image-wrapper {
     max-width: 500px;
     margin-right: 20px;
+    animation: slideInRight 1s ease-out, float 3s ease-in-out infinite 1s;
+}
+
+.hero-section .hero-image-wrapper img {
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.hero-section .hero-image-wrapper:hover img {
+    transform: scale(1.05) rotate(2deg);
 }
 
 /* About section styling */
 
-.about-section{
+.about-section {
     padding: 120px;
     background: #EDF4F2;
 }
@@ -171,22 +283,29 @@ header .navbar{
     justify-content: space-between;
 }
 
-.about-section .about-image-wrapper .about-image{
+.about-section .about-image-wrapper .about-image {
     width: 400px;
     height: 400px;
     object-fit: cover;
     border-radius: 50%;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.about-section .about-details .section-title{
+.about-section .about-image-wrapper .about-image:hover {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(49, 71, 58, 0.3);
+}
+
+.about-section .about-details .section-title {
     padding: 0;
 }
 
-.about-section .about-details{
+.about-section .about-details {
     max-width: 50%;
 }
 
-.about-section .about-details .text{
+.about-section .about-details .text {
     line-height: 30px;
     margin: 50px 0 30px;
     text-align: center;
@@ -199,26 +318,35 @@ header .navbar{
     justify-content: center;
 }
 
-.about-section .social-link-list .social-link{
+.about-section .social-link-list .social-link {
     color: green;
     font-size: large;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(0, 128, 0, 0.1);
 }
 
-
-.about-section .social-link-list .social-link:hover{
-    color: #31473A;
+.about-section .social-link-list .social-link:hover {
+    color: white;
+    background: #31473A;
+    transform: translateY(-5px) rotate(360deg);
+    box-shadow: 0 8px 20px rgba(49, 71, 58, 0.3);
 }
 
 /*Video Lessons section Styling*/
 
-.lessons-section{
+.lessons-section {
     background: #242b27;
     color: #EDF4F2;
     padding: 50px 10px 0;
 }
 
-.lessons-section .lessons-list{
+.lessons-section .lessons-list {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -226,7 +354,7 @@ header .navbar{
     padding-bottom: 50px;
 }
 
-.lessons-section .lessons-list .lessons-item{
+.lessons-section .lessons-list .lessons-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,21 +363,22 @@ header .navbar{
     gap: 0px;
 }
 
-.lessons-section .lessons-list .lessons-item a img{
+.lessons-section .lessons-list .lessons-item a img {
     width: 100%;
     max-width: 83%;
     max-height: 60%;
     aspect-ratio: 1;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     background: black;
     object-fit: cover;
     cursor: pointer;
-    transition: 0.3s ease;
-
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
 }
-.lessons-section .lessons-list .lessons-item a{
-    display:flex;
+
+.lessons-section .lessons-list .lessons-item a {
+    display: flex;
     width: 100%;
     text-align: center;
     justify-content: center;
@@ -258,66 +387,129 @@ header .navbar{
     vertical-align: top;
 }
 
-.lessons-section .lessons-list .lessons-item a img:hover{
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+.lessons-section .lessons-list .lessons-item a img:hover {
+    transform: scale(1.08) translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    filter: brightness(1.1);
 }
 
-.lessons-section .lessons-list .lessons-item .name{
+.lessons-section .lessons-list .lessons-item {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.lessons-section .lessons-list .lessons-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.lessons-section .lessons-list .lessons-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.lessons-section .lessons-list .lessons-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.lessons-section .lessons-list .lessons-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.lessons-section .lessons-list .lessons-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.lessons-section .lessons-list .lessons-item .name {
     margin: 10px 0 10px;
     font-size: large;
     font-weight: bolder;
+    transition: all 0.3s ease;
 }
 
-.lessons-section .lessons-list .lessons-item .text{
+.lessons-section .lessons-list .lessons-item:hover .name {
+    color: #EDF4F2;
+    transform: scale(1.05);
+}
+
+.lessons-section .lessons-list .lessons-item .text {
     font-size: small;
     max-width: 90%;
     line-height: 25px;
     color: #CADCAE;
     font-weight: 500px;
     text-align: center;
+    transition: all 0.3s ease;
+}
+
+.lessons-section .lessons-list .lessons-item:hover .text {
+    color: #EDF4F2;
 }
 
 
 /* Team section styling */
-.team-section{
+.team-section {
     padding: 100px 20px;
     background: #EDF4F2;
 }
-.team-section .slider-wrapper{
+
+.team-section .slider-wrapper {
     overflow: hidden;
     padding: 0 40px;
 }
 
-.team-section .team-list .team-item{
+.team-section .team-list .team-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 35px;
 }
-.team-section .team-list .team-item .team-image{
+
+.team-section .team-list .team-item .team-image {
     width: 200px;
     height: 200px;
     object-fit: cover;
     margin-bottom: 50px;
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+    border: 4px solid transparent;
 }
-.team-section .team-list .team-item .name{
+
+.team-section .team-list .team-item:hover .team-image {
+    transform: scale(1.1) translateY(-10px);
+    box-shadow: 0 15px 40px rgba(49, 71, 58, 0.4);
+    border-color: #31473A;
+}
+
+.team-section .team-list .team-item .name {
     font-size: large;
     font-weight: bolder;
     margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
-.team-section .team-list .team-item .role{
+
+.team-section .team-list .team-item:hover .name {
+    color: #31473A;
+    transform: scale(1.05);
+}
+
+.team-section .team-list .team-item .role {
     font-size: large;
     color: green;
     margin-bottom: 20px;
+    transition: all 0.3s ease;
 }
-.team-section .slider-wrapper{
+
+.team-section .team-list .team-item:hover .role {
+    color: #31473A;
+}
+
+.team-section .slider-wrapper {
     position: relative;
 }
-.team-section .swiper-button-prev, .team-section .swiper-button-next{
+
+.team-section .swiper-button-prev,
+.team-section .swiper-button-next {
     color: #31473A;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
@@ -328,14 +520,18 @@ header .navbar{
     justify-content: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-.team-section .swiper-button-prev:hover, .team-section .swiper-button-next:hover{
+
+.team-section .swiper-button-prev:hover,
+.team-section .swiper-button-next:hover {
     background: rgba(255, 255, 255, 0.9);
 }
-.team-section .swiper-pagination-bullet{
+
+.team-section .swiper-pagination-bullet {
     background: #31473A;
     opacity: 0.7;
 }
-.team-section .swiper-pagination-bullet-active{
+
+.team-section .swiper-pagination-bullet-active {
     background: #31473A;
     opacity: 1;
     width: 12px;
@@ -343,35 +539,64 @@ header .navbar{
 }
 
 /* Footer styling */
-.footer-section{
+.footer-section {
     background: #31473A;
     padding: 50px 20px;
 }
-.footer-section .section-content{
+
+.footer-section .section-content {
     display: flex;
     gap: 20px;
     justify-content: space-between;
     width: 100%;
 }
 
-.footer-section :where(.copyright-text, .social-link, .policy-link){
-    color: white;   
+.footer-section :where(.copyright-text, .social-link, .policy-link) {
+    color: white;
     transition: 0.3s ease;
 }
-.footer-section .social-link-list{
+
+.footer-section .social-link-list {
     display: flex;
     gap: 15px;
 }
-.footer-section .social-link-list .social-link{
+
+.footer-section .social-link-list .social-link {
     font-size: large;
+    transition: all 0.3s ease;
+    display: inline-block;
 }
-.footer-section .social-link-list .social-link:hover{
+
+.footer-section .social-link-list .social-link:hover {
+    color: greenyellow;
+    transform: translateY(-5px) scale(1.2);
+}
+
+.footer-section .policy-text .policy-link {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.footer-section .policy-text .policy-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: greenyellow;
+    transition: width 0.3s ease;
+}
+
+.footer-section .policy-text .policy-link:hover {
     color: greenyellow;
 }
-.footer-section .policy-text .policy-link:hover{
-    color: greenyellow;
+
+.footer-section .policy-text .policy-link:hover::after {
+    width: 100%;
 }
-.footer-section .policy-text .separator{
+
+.footer-section .policy-text .separator {
     margin: 0 10px;
     color: white;
 }
@@ -379,20 +604,21 @@ header .navbar{
 
 /* Responsive styling for tablets and smaller screens */
 @media screen and (max-width: 1200px) {
-    .lessons-section .lessons-list{
+    .lessons-section .lessons-list {
         gap: 50px;
         justify-content: center;
     }
 
-    .lessons-section .lessons-list .lessons-item{
+    .lessons-section .lessons-list .lessons-item {
         width: 100%;
         max-width: 300px;
     }
 
 }
+
 /* Responsive styling for mobile devices */
 @media screen and (max-width: 900px) {
-    body.show-mobile-menu header::before{
+    body.show-mobile-menu header::before {
         content: "";
         position: fixed;
         left: 0;
@@ -402,24 +628,24 @@ header .navbar{
         backdrop-filter: blur(5px);
         background-color: rgba(0, 0, 0, 0.2);
     }
-    
-    .navbar :where(#menu-close-button, #menu-open-button){
+
+    .navbar :where(#menu-close-button, #menu-open-button) {
         font-size: large;
         display: block;
     }
 
-    .navbar #menu-close-button{
+    .navbar #menu-close-button {
         position: absolute;
         right: 30px;
         top: 30px;
     }
 
-    .navbar #menu-open-button{
+    .navbar #menu-open-button {
         color: white;
     }
-    
-    .navbar .nav-menu{
-       display: block;
+
+    .navbar .nav-menu {
+        display: block;
         position: fixed;
         left: -300px;
         top: 0;
@@ -433,17 +659,18 @@ header .navbar{
         transition: left 0.2s ease;
     }
 
-    body.show-mobile-menu .navbar .nav-menu{
+    body.show-mobile-menu .navbar .nav-menu {
         left: 0;
     }
 
-    .navbar .nav-menu .nav-link{
+    .navbar .nav-menu .nav-link {
         color: black;
         font-size: large;
         display: block;
         margin-top: 17px;
     }
-    .hero-section .section-content{
+
+    .hero-section .section-content {
         flex-direction: column-reverse;
         justify-content: center;
         gap: 50px;
@@ -451,126 +678,141 @@ header .navbar{
         padding: 30px 20px 20px;
     }
 
-    .hero-section .hero-details :is(.subtitle, .description), .about-section .about-details{
+    .hero-section .hero-details :is(.subtitle, .description),
+    .about-section .about-details {
         max-width: 100%;
     }
 
-    .hero-section .hero-details .button{
+    .hero-section .hero-details .button {
         justify-content: center;
     }
 
-    .hero-section .hero-image-wrapper{
+    .hero-section .hero-image-wrapper {
         max-width: 270px;
         margin-right: 0;
     }
 
-    .about-section .section-content{
+    .about-section .section-content {
         flex-direction: column-reverse;
         gap: 70px;
     }
 
-    .about-section .about-image-wrapper .about-image{
+    .about-section .about-image-wrapper .about-image {
         width: 100%;
         height: 100%;
         max-width: 250px;
         aspect-ratio: 1;
     }
-    .about-section .about-details{
+
+    .about-section .about-details {
         max-width: 100%;
         text-align: center;
     }
 
-    .about-section{
+    .about-section {
         padding: 70px 20px;
     }
 
-    .lessons-section{
+    .lessons-section {
         padding: 70px 20px 0;
     }
 
-    .lessons-section .section-title{
+    .lessons-section .section-title {
         font-size: large;
         padding-bottom: 70px;
     }
 
-    .lessons-section .lessons-list{
+    .lessons-section .lessons-list {
         gap: 40px;
         padding-bottom: 70px;
     }
 
-    .lessons-section .lessons-list .lessons-item{
+    .lessons-section .lessons-list .lessons-item {
         max-width: 250px;
     }
 
-    .lessons-section .lessons-list .lessons-item .name{
+    .lessons-section .lessons-list .lessons-item .name {
         font-size: medium;
         margin: 15px 0 8px;
     }
 
-    .lessons-section .lessons-list .lessons-item .text{
+    .lessons-section .lessons-list .lessons-item .text {
         font-size: smaller;
         line-height: 20px;
     }
 
-    .about-section .about-details .text{
+    .about-section .about-details .text {
         font-size: x-small;
         line-height: 20px;
         margin: 30px 0 20px;
     }
 
-    .about-section .social-link-list .social-link{
+    .about-section .social-link-list .social-link {
         font-size: medium;
     }
 }
+
 /* Responsive styling for very small mobile devices */
 @media screen and (max-width: 400px) {
-    .hero-section .hero-image-wrapper{
+    .hero-section .hero-image-wrapper {
         max-width: 200px;
     }
-    .about-section .about-image-wrapper .about-image{
+
+    .about-section .about-image-wrapper .about-image {
         max-width: 200px;
     }
-    .lessons-section .lessons-list .lessons-item{
+
+    .lessons-section .lessons-list .lessons-item {
         max-width: 200px;
     }
-    .lessons-section .lessons-list .lessons-item .lessons-video{
+
+    .lessons-section .lessons-list .lessons-item .lessons-video {
         max-width: 100%;
     }
-    .lessons-section .lessons-list{
+
+    .lessons-section .lessons-list {
         gap: 30px;
     }
-    .lessons-section .lessons-list .lessons-item .name{
+
+    .lessons-section .lessons-list .lessons-item .name {
         font-size: small;
     }
-    .lessons-section .lessons-list .lessons-item .text{
+
+    .lessons-section .lessons-list .lessons-item .text {
         font-size: x-small;
         line-height: 18px;
     }
-    .about-section .about-details .text{
+
+    .about-section .about-details .text {
         font-size: xx-small;
         line-height: 18px;
         margin: 20px 0 15px;
     }
-    .about-section .social-link-list .social-link{
+
+    .about-section .social-link-list .social-link {
         font-size: medium;
     }
-    
+
 }
 
 @media screen and (max-width: 640px) {
-    .hero-section .hero-details .title{
+    .hero-section .hero-details .title {
         font-size: x-large;
     }
-    .hero-section .hero-details .subtitle{
+
+    .hero-section .hero-details .subtitle {
         font-size: large;
     }
-    .hero-section .hero-details .description{
+
+    .hero-section .hero-details .description {
         font-size: small;
     }
-    .hero-section .hero-details .button{
+
+    .hero-section .hero-details .button {
         font-size: medium;
     }
-    .footer-section .footer-content{
+
+    .footer-section .footer-content {
         flex-direction: column;
         gap: 20px;
     }
