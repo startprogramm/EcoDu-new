@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ video.title }} - EcoDu</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'watch-video.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="video-header">
+        <div class="header-content">
+            <a href="{% url 'videos:home' %}" class="logo">
+                <h2>EcoDu🌱</h2>
+            </a>
+            <a href="{% url 'videos:home' %}" class="home-link">
+                <i class="fas fa-home"></i> Bosh sahifa
+            </a>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="{% url 'videos:home' %}">Home</a>
+        <span class="separator">›</span>
+        <a href="{% url 'videos:home' %}#lessons">Lessons</a>
+        <span class="separator">›</span>
+        <span class="current">{{ video.title }}</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="video-page">
+        <div class="video-container">
+            <!-- Video Player -->
+            <div class="video-wrapper">
+                <iframe src="{{ video.youtube_url }}" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- Video Info -->
+            <div class="video-info">
+                <h1 class="video-title">{{ video.title }}</h1>
+
+                <div class="video-meta">
+                    <div class="meta-left">
+                        <span class="date"><i class="fas fa-calendar"></i> {{ video.created_at|date:"d-m-Y" }}</span>
+                        <span class="date"><i class="fas fa-eye"></i> {{ video.views }} ko'rildi</span>
+                    </div>
+                </div>
+
+                <div class="video-description">
+                    <p>{{ video.description }}</p>
+                </div>
+
+                {% if video.author_name %}
+                <div class="video-author">
+                    {% if video.author_image %}
+                    <img src="{{ video.author_image.url }}" alt="{{ video.author_name }}" class="author-image">
+                    {% else %}
+                    <img src="{% static 'Nurjahon.jpg' %}" alt="{{ video.author_name }}" class="author-image">
+                    {% endif %}
+                    <div class="author-info">
+                        <h3 class="author-name">{{ video.author_name }}</h3>
+                        <span class="author-role">{{ video.author_role }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Video Actions -->
+                <div class="video-actions">
+                    {% if user.is_authenticated %}
+                    <button class="action-button {% if user_rating == 'like' %}liked{% endif %}" id="like-btn"
+                        data-video-id="{{ video.id }}">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span id="like-count">{{ video.likes }}</span>
+                    </button>
+                    <button class="action-button {% if user_rating == 'dislike' %}disliked{% endif %}" id="dislike-btn"
+                        data-video-id="{{ video.id }}">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span id="dislike-count">{{ video.dislikes }}</span>
+                    </button>
+                    {% if has_quiz %}
+                    <button class="action-button quiz-button" data-video-slug="{{ video.slug }}">
+                        <i class="fas fa-clipboard-question"></i>
+                        Test topshirish
+                    </button>
+                    {% endif %}
+                    {% else %}
+                    <p class="text-muted">Like qilish va test topshirish uchun <a href="{% url 'users:login' %}">tizimga
+                            kiring</a></p>
+                    {% endif %}
+                </div>
+
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <h3 class="comments-header">Izohlar ({{ comments.count }})</h3>
+
+                    {% if user.is_authenticated %}
+                    <div class="comment-form">
+                        <textarea class="comment-input" id="comment-text" placeholder="Izoh qoldiring..."></textarea>
+                        <button class="comment-submit" id="submit-comment"
+                            data-video-id="{{ video.id }}">Yuborish</button>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">Izoh qoldirish uchun <a href="{% url 'users:login' %}">tizimga kiring</a></p>
+                    {% endif %}
+
+                    <div class="comments-list" id="comments-list">
+                        {% for comment in comments %}
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-avatar">{{ comment.user.username|first|upper }}</div>
+                                <span class="comment-author">{{ comment.user.username }}</span>
+                                <span class="comment-date">{{ comment.created_at|timesince }} oldin</span>
+                            </div>
+                            <p class="comment-text">{{ comment.text }}</p>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">Hozircha izohlar yo'q. Birinchi bo'lib izoh qoldiring!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Videos -->
+        <div class="related-videos">
+            <h2 class="section-title">Boshqa darslar</h2>
+            <div class="related-grid">
+                {% for related in related_videos %}
+                <a href="{% url 'videos:video_detail' related.slug %}" class="related-item">
+                    <div class="related-thumbnail">
+                        {% if related.thumbnail %}
+                        <img src="{{ related.thumbnail.url }}" alt="{{ related.title }}">
+                        {% else %}
+                        <img src="{% static 'plastik.jpg' %}" alt="{{ related.title }}">
+                        {% endif %}
+                        <div class="video-overlay">
+                            <span class="watch-text">Ko'rish</span>
+                        </div>
+                    </div>
+                    <div class="related-info">
+                        <h3 class="related-title">{{ related.title }}</h3>
+                        <p class="related-desc">{{ related.description|truncatewords:10 }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="back-button-container">
+                <a href="{% url 'videos:home' %}#lessons" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Barcha darslarga qaytish
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="section-content">
+            <p class="copyright-text">© 2025 EcoDu. All rights reserved.</p>
+            <div class="social-link-list">
+                <a href="#" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-telegram"></i></a>
+            </div>
+            <p class="policy-text">
+                <a href="#" class="policy-link">Privacy Policy</a>
+                <span class="separator">|</span>
+                <a href="#" class="policy-link">Terms of Service</a>
+                <span class="separator">|</span>
+                <a href="#" class="policy-link">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quiz-modal">
+        <div class="quiz-overlay"></div>
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h2 class="quiz-title">Test topshirish</h2>
+                <button class="quiz-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="quiz-progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="quiz-content">
+                <!-- Questions will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Pass Django data to JavaScript
+        const VIDEO_ID = {{ video.id }};
+        const VIDEO_SLUG = "{{ video.slug }}";
+        const HAS_QUIZ = {{ has_quiz| yesno: "true,false" }};
+        const IS_AUTHENTICATED = {{ user.is_authenticated| yesno: "true,false" }};
+        const CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'script.js' %}"></script>
+    <script src="{% static 'watch-video.js' %}"></script>
+    <script src="{% static 'video-interactions.js' %}"></script>
+    <script src="{% static 'quiz.js' %}"></script>
+
+</body>
+
+</html>
