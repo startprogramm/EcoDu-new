@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }} - EcoDu</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="{% url 'videos:home' %}" class="nav-logo">
+                <h2 class="logo-text">EcoDu🌱</h2>
+            </a>
+            <ul class="nav-menu">
+                <button id="menu-close-button" class="fas fa-times"></button>
+                <li class="nav-item">
+                    <a href="{% url 'videos:home' %}" class="nav-link">Bosh sahifa</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'users:profile' %}" class="nav-link">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'users:logout' %}" class="nav-link">Chiqish</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'users:login' %}" class="nav-link login-button">Kirish</a>
+                </li>
+                {% endif %}
+            </ul>
+            <button id="menu-open-button" class="fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <!-- Category Videos -->
+    <section class="lessons-section" style="min-height: 100vh; padding-top: 100px;">
+        <h2 class="section-title">{{ category.name }}</h2>
+        <p style="text-align: center; color: #CADCAE; margin-bottom: 40px;">{{ category.description }}</p>
+
+        <div class="section-content">
+            <ul class="lessons-list">
+                {% for video in videos %}
+                <li class="lessons-item">
+                    <a href="{% url 'videos:video_detail' video.slug %}" class="video-link">
+                        <div class="video-thumbnail">
+                            {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                            {% else %}
+                            <img src="{% static 'plastik.jpg' %}" alt="{{ video.title }}">
+                            {% endif %}
+                            <div class="video-overlay">
+                                <span class="watch-text">Ko'rish</span>
+                            </div>
+                        </div>
+                    </a>
+                    <h3 class="name">{{ video.title }}</h3>
+                    <p class="text">{{ video.description|truncatewords:20 }}</p>
+                </li>
+                {% empty %}
+                <li>
+                    <p style="color: #EDF4F2;">Bu kategoriyada hozircha videolar yo'q.</p>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="{% url 'videos:home' %}#lessons"
+                    style="color: greenyellow; text-decoration: none; font-size: 18px;">
+                    <i class="fas fa-arrow-left"></i> Barcha darslarga qaytish
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="section-content">
+            <p class="copyright-text">© 2025 EcoDu. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'script.js' %}"></script>
+</body>
+
+</html>
