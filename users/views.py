@@ -34,21 +34,19 @@ def user_login(request):
         return redirect('videos:home')
     
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {username}!')
-                return redirect('videos:home')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Xush kelibsiz, {username}!')
+            return redirect('videos:home')
         else:
-            messages.error(request, 'Invalid username or password.')
-    else:
-        form = AuthenticationForm()
+            messages.error(request, 'Foydalanuvchi nomi yoki parol noto\'g\'ri.')
     
+    form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
 
 
