@@ -1,32 +1,97 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
 
-{% block title %}Register - EcoDu{% endblock %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ro'yxatdan o'tish - EcoDu</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
 
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h3 class="mb-0"><i class="fas fa-user-plus"></i> Create Account</h3>
+<body>
+
+    <main class="auth-section">
+        <div class="auth-card" role="region" aria-labelledby="register-title">
+            <h1 id="register-title" class="section-title">Hisob yaratish</h1>
+
+            <form method="post" id="register-form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class="btn btn-success btn-lg w-100 mt-3">
-                            <i class="fas fa-user-plus"></i> Register
-                        </button>
-                    </form>
-                    <hr>
-                    <p class="text-center mb-0">
-                        Already have an account? 
-                        <a href="{% url 'users:login' %}">Login here</a>
-                    </p>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="id_username">Foydalanuvchi nomi</label>
+                    <input id="id_username" name="username" type="text" required autocomplete="username"
+                        value="{{ form.username.value|default:'' }}" />
+                    {% if form.username.errors %}
+                    <span class="error-text">{{ form.username.errors.0 }}</span>
+                    {% endif %}
                 </div>
-            </div>
+
+                <div class="input-group">
+                    <label for="id_email">Email</label>
+                    <input id="id_email" name="email" type="email" required autocomplete="email"
+                        value="{{ form.email.value|default:'' }}" />
+                    {% if form.email.errors %}
+                    <span class="error-text">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_first_name">Ism</label>
+                    <input id="id_first_name" name="first_name" type="text" autocomplete="given-name"
+                        value="{{ form.first_name.value|default:'' }}" />
+                    {% if form.first_name.errors %}
+                    <span class="error-text">{{ form.first_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_last_name">Familiya</label>
+                    <input id="id_last_name" name="last_name" type="text" autocomplete="family-name"
+                        value="{{ form.last_name.value|default:'' }}" />
+                    {% if form.last_name.errors %}
+                    <span class="error-text">{{ form.last_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password">Parol</label>
+                    <div class="password-wrap">
+                        <input id="id_password" name="password" type="password" minlength="6" required
+                            autocomplete="new-password" />
+                        <button type="button" class="pw-toggle" aria-label="Parolni ko'rsatish"><i
+                                class="fa-regular fa-eye"></i></button>
+                    </div>
+                    {% if form.password.errors %}
+                    <span class="error-text">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password_confirm">Parolni tasdiqlash</label>
+                    <input id="id_password_confirm" name="password_confirm" type="password" minlength="6" required
+                        autocomplete="new-password" />
+                    {% if form.password_confirm.errors %}
+                    <span class="error-text">{{ form.password_confirm.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="button primary">Ro'yxatdan o'tish</button>
+
+                <p class="auth-footer">Hisobingiz bormi? <a href="{% url 'users:login' %}">Kirish</a></p>
+                <p class="auth-footer"><a href="{% url 'videos:home' %}">Bosh sahifaga qaytish</a></p>
+            </form>
         </div>
-    </div>
-</div>
-{% endblock %}
+    </main>
+
+    <script src="{% static 'register.js' %}"></script>
+</body>
+
+</html>

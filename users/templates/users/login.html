@@ -1,32 +1,61 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
 
-{% block title %}Login - EcoDu{% endblock %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kirish - EcoDu</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
 
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h3 class="mb-0"><i class="fas fa-sign-in-alt"></i> Login</h3>
+<body>
+
+    <main class="auth-section">
+        <div class="auth-card" role="region" aria-labelledby="login-title">
+            <h1 id="login-title" class="section-title">Xush kelibsiz</h1>
+
+            <form method="post" id="login-form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class="btn btn-success btn-lg w-100 mt-3">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </form>
-                    <hr>
-                    <p class="text-center mb-0">
-                        Don't have an account?
-                        <a href="{% url 'users:register' %}">Register here</a>
-                    </p>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="id_username">Foydalanuvchi nomi</label>
+                    <input id="id_username" name="username" type="text" required autocomplete="username"
+                        value="{{ form.username.value|default:'' }}" />
+                    {% if form.username.errors %}
+                    <span class="error-text">{{ form.username.errors.0 }}</span>
+                    {% endif %}
                 </div>
-            </div>
+
+                <div class="input-group">
+                    <label for="id_password">Parol</label>
+                    <div class="password-wrap">
+                        <input id="id_password" name="password" type="password" required
+                            autocomplete="current-password" />
+                        <button type="button" class="pw-toggle" aria-label="Parolni ko'rsatish"><i
+                                class="fa-regular fa-eye"></i></button>
+                    </div>
+                    {% if form.password.errors %}
+                    <span class="error-text">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="button primary">Kirish</button>
+
+                <p class="auth-footer">Hisobingiz yo'qmi? <a href="{% url 'users:register' %}">Ro'yxatdan o'tish</a></p>
+                <p class="auth-footer"><a href="{% url 'videos:home' %}">Bosh sahifaga qaytish</a></p>
+            </form>
         </div>
-    </div>
-</div>
-{% endblock %}
+    </main>
+
+    <script src="{% static 'login.js' %}"></script>
+</body>
+
+</html>

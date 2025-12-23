@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - EcoDu</title>
+    <title>Profil - EcoDu</title>
 
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
@@ -25,13 +25,13 @@
             <ul class="nav-menu">
                 <button id="menu-close-button" class="fas fa-times"></button>
                 <li class="nav-item">
-                    <a href="{% url 'videos:home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'videos:home' %}" class="nav-link">Bosh sahifa</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'users:profile' %}" class="nav-link">Profile</a>
+                    <a href="{% url 'users:profile' %}" class="nav-link">Profil</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
+                    <a href="{% url 'users:logout' %}" class="nav-link">Chiqish</a>
                 </li>
             </ul>
             <button id="menu-open-button" class="fas fa-bars"></button>
@@ -62,7 +62,7 @@
                         <p class="mt-3">{{ user.bio }}</p>
                         {% endif %}
                         <a href="{% url 'users:edit_profile' %}" class="btn btn-success mt-3">
-                            <i class="fas fa-edit"></i> Edit Profile
+                            <i class="fas fa-edit"></i> Profilni tahrirlash
                         </a>
                     </div>
                 </div>
@@ -70,18 +70,18 @@
                 <!-- Stats Card -->
                 <div class="card shadow mt-4">
                     <div class="card-body">
-                        <h5 class="card-title">Statistics</h5>
+                        <h5 class="card-title">Statistika</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between">
-                                <span><i class="fas fa-video text-success"></i> Videos Watched</span>
+                                <span><i class="fas fa-video text-success"></i> Ko'rilgan videolar</span>
                                 <strong>{{ videos_watched }}</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
-                                <span><i class="fas fa-clipboard-check text-success"></i> Quizzes Passed</span>
+                                <span><i class="fas fa-clipboard-check text-success"></i> O'tilgan testlar</span>
                                 <strong>{{ quizzes_passed }}</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
-                                <span><i class="fas fa-star text-warning"></i> Total Points</span>
+                                <span><i class="fas fa-star text-warning"></i> Jami ballar</span>
                                 <strong>{{ user.total_points }}</strong>
                             </li>
                         </ul>
@@ -94,7 +94,7 @@
                 <!-- Recent Videos -->
                 <div class="card shadow mb-4">
                     <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fas fa-history"></i> Recent Videos</h5>
+                        <h5 class="mb-0"><i class="fas fa-history"></i> Oxirgi videolar</h5>
                     </div>
                     <div class="card-body">
                         {% if recent_videos %}
@@ -105,21 +105,21 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">{{ progress.video.title }}</h6>
-                                        <small class="text-muted">Watched {{ progress.watched_at|timesince }}
-                                            ago</small>
+                                        <small class="text-muted">{{ progress.watched_at|timesince }} oldin
+                                            ko'rilgan</small>
                                     </div>
                                     {% if progress.completed %}
-                                    <span class="badge bg-success">Completed</span>
+                                    <span class="badge bg-success">Tugallangan</span>
                                     {% else %}
-                                    <span class="badge bg-warning">In Progress</span>
+                                    <span class="badge bg-warning">Jarayonda</span>
                                     {% endif %}
                                 </div>
                             </a>
                             {% endfor %}
                         </div>
                         {% else %}
-                        <p class="text-muted">No videos watched yet. <a href="{% url 'videos:home' %}#lessons">Start
-                                learning!</a></p>
+                        <p class="text-muted">Hali videolar ko'rilmagan. <a
+                                href="{% url 'videos:home' %}#lessons">O'rganishni boshlang!</a></p>
                         {% endif %}
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                 <!-- Recent Quizzes -->
                 <div class="card shadow">
                     <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Recent Quiz Attempts</h5>
+                        <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Oxirgi test urinishlari</h5>
                     </div>
                     <div class="card-body">
                         {% if recent_quizzes %}
@@ -137,20 +137,20 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">{{ attempt.quiz.title }}</h6>
-                                        <small class="text-muted">{{ attempt.completed_at|timesince }} ago</small>
+                                        <small class="text-muted">{{ attempt.completed_at|timesince }} oldin</small>
                                         <div class="mt-2">
-                                            <span class="badge bg-info">Score: {{ attempt.score }}%</span>
+                                            <span class="badge bg-info">Ball: {{ attempt.score }}%</span>
                                             <span class="badge bg-secondary">{{ attempt.correct_answers }}/{{
-                                                attempt.total_questions }} correct</span>
+                                                attempt.total_questions }} to'g'ri</span>
                                         </div>
                                     </div>
                                     {% if attempt.passed %}
                                     <span class="badge bg-success fs-6">
-                                        <i class="fas fa-check-circle"></i> Passed
+                                        <i class="fas fa-check-circle"></i> O'tdi
                                     </span>
                                     {% else %}
                                     <span class="badge bg-danger fs-6">
-                                        <i class="fas fa-times-circle"></i> Failed
+                                        <i class="fas fa-times-circle"></i> O'tmadi
                                     </span>
                                     {% endif %}
                                 </div>
@@ -158,8 +158,9 @@
                             {% endfor %}
                         </div>
                         {% else %}
-                        <p class="text-muted">No quiz attempts yet. <a href="{% url 'videos:home' %}#lessons">Watch
-                                videos and take quizzes!</a></p>
+                        <p class="text-muted">Hali test urinishlari yo'q. <a
+                                href="{% url 'videos:home' %}#lessons">Videolarni tomosha qiling va testlarni
+                                yeching!</a></p>
                         {% endif %}
                     </div>
                 </div>
