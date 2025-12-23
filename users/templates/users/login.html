@@ -8,6 +8,25 @@
     <title>Kirish - EcoDu</title>
     <link rel="stylesheet" href="{% static 'register.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,7 +35,7 @@
         <div class="auth-card" role="region" aria-labelledby="login-title">
             <h1 id="login-title" class="section-title">Xush kelibsiz</h1>
 
-            <form method="post" id="login-form">
+            <form method="post" action="{% url 'users:login' %}">
                 {% csrf_token %}
 
                 {% if messages %}
@@ -29,24 +48,12 @@
 
                 <div class="input-group">
                     <label for="id_username">Foydalanuvchi nomi</label>
-                    <input id="id_username" name="username" type="text" required autocomplete="username"
-                        value="{{ form.username.value|default:'' }}" />
-                    {% if form.username.errors %}
-                    <span class="error-text">{{ form.username.errors.0 }}</span>
-                    {% endif %}
+                    <input id="id_username" name="username" type="text" required autocomplete="username" />
                 </div>
 
                 <div class="input-group">
                     <label for="id_password">Parol</label>
-                    <div class="password-wrap">
-                        <input id="id_password" name="password" type="password" required
-                            autocomplete="current-password" />
-                        <button type="button" class="pw-toggle" aria-label="Parolni ko'rsatish"><i
-                                class="fa-regular fa-eye"></i></button>
-                    </div>
-                    {% if form.password.errors %}
-                    <span class="error-text">{{ form.password.errors.0 }}</span>
-                    {% endif %}
+                    <input id="id_password" name="password" type="password" required autocomplete="current-password" />
                 </div>
 
                 <button type="submit" class="button primary">Kirish</button>
@@ -57,7 +64,6 @@
         </div>
     </main>
 
-    <script src="{% static 'login.js' %}"></script>
 </body>
 
 </html>
