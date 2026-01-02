@@ -34,6 +34,9 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_ENV.split(',') if host.strip()]
 
+# Add custom domain
+ALLOWED_HOSTS.extend(['ecodu.online', 'www.ecodu.online'])
+
 # Automatically allow Railway domains
 if not DEBUG:
     # Get Railway's public domain from environment
@@ -52,6 +55,9 @@ if CSRF_TRUSTED_ORIGINS_ENV:
     CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_ENV.split(',') if origin.strip()]
 else:
     CSRF_TRUSTED_ORIGINS = []
+
+# Add custom domain to CSRF trusted origins
+CSRF_TRUSTED_ORIGINS.extend(['https://ecodu.online', 'https://www.ecodu.online'])
 
 # Automatically add Railway HTTPS origins
 if not DEBUG:
