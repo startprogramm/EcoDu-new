@@ -66,13 +66,57 @@ python manage.py runserver
 - Admin panel: http://127.0.0.1:8000/admin/
 - Login: admin / admin123
 
-## Deployment
+## Production Deployment
 
-This project is ready to deploy on:
-- Railway.app (recommended)
-- Render.com
-- Heroku
-- PythonAnywhere
+This project is production-ready and can be deployed to various platforms.
+
+### Recommended Platforms
+
+1. **Railway.app** (Recommended for Production)
+   - Easy GitHub integration
+   - Automatic deployments
+   - Built-in PostgreSQL
+   - Free tier with $5 credit
+   - [📖 Railway Deployment Guide](DEPLOYMENT_RAILWAY.md)
+
+2. **Render.com** (Recommended for Testing)
+   - Free tier available
+   - PostgreSQL included
+   - Simple configuration
+   - [📖 Render Deployment Guide](DEPLOYMENT_RENDER.md)
+
+### Quick Start
+
+1. **Set Environment Variables**:
+   ```bash
+   SECRET_KEY=your-secret-key
+   DEBUG=False
+   ALLOWED_HOSTS=your-domain.com
+   DATABASE_URL=postgresql://...
+   ```
+
+2. **Deploy**:
+   - Push to GitHub
+   - Connect to Railway/Render
+   - Platform handles the rest automatically
+
+### Environment Variables
+
+See [.env.example](.env.example) for all required environment variables.
+
+**Generate SECRET_KEY**:
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+### Production Features
+
+✅ Environment-based configuration  
+✅ PostgreSQL database support  
+✅ Static files with WhiteNoise  
+✅ Security headers and HTTPS  
+✅ Automatic migrations  
+✅ Gunicorn WSGI server  
 
 See deployment documentation for platform-specific instructions.
 
