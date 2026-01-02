@@ -96,6 +96,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecodu_project.wsgi.application'
 
 
+# Caching Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'ecodu-cache',
+    }
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 

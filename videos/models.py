@@ -26,20 +26,20 @@ class Category(models.Model):
 
 class Video(models.Model):
     """Main video model"""
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(unique=True, db_index=True)
     description = models.TextField()
     youtube_url = models.URLField(help_text="YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)")
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='videos')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='videos', db_index=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='authored_videos')
     author_name = models.CharField(max_length=100, blank=True)
     author_role = models.CharField(max_length=100, blank=True, default="Video developer")
     author_image = models.ImageField(upload_to='authors/', blank=True)
-    views = models.IntegerField(default=0)
+    views = models.IntegerField(default=0, db_index=True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):

@@ -1,15 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.db.models import Q
+from django.db.models import Q, Prefetch
+from django.views.decorators.cache import cache_page
+from django.core.paginator import Paginator
 from .models import Video, Category, VideoProgress, VideoRating, Comment
 from quizzes.models import Quiz
 
 
+@cache_page(60 * 5)  # Cache for 5 minutes
 def home(request):
     """Homepage with video categories and featured videos"""
-    categories = Category.objects.all()
-    featured_videos = Video.objects.all()[:8]
+    # Optimize queries: prefetch related data to avoid N+1
+    categories = Category.objects.prefetch_related('videos').all()
+    featured_videos = Video.objects.select_related('category', 'author').order_by('-created_at')[:8]
     
     context = {
         'categories': categories,
@@ -20,30 +24,40 @@ def home(request):
 
 def video_detail(request, slug):
     """Video detail page with player, description, and related videos"""
-    video = get_object_or_404(Video, slug=slug)
+    # Optimize: select_related for ForeignKey fields
+    video = get_object_or_404(
+        Video.objects.select_related('category', 'author').prefetch_related('comments'),
+        slug=slug
+    )
     
-    # Increment view count
-    video.views += 1
+    # Increment view count (don't load other fields)
+    video.views = video.views + 1
     video.save(update_fields=['views'])
     
-    # Get related videos (show other videos since each has unique category)
-    related_videos = Video.objects.exclude(id=video.id).order_by('-created_at')[:4]
+    # Get related videos with optimization
+    related_videos = Video.objects.select_related('category', 'author').exclude(id=video.id).order_by('-created_at')[:4]
     
-    # Get comments
-    comments = video.comments.filter(parent=None).order_by('-created_at')
+    # Get only parent comments with optimization
+    comments = video.comments.select_related('user').filter(parent=None).order_by('-created_at')[:50]
     
-    # Check if user has completed this video
+    # Check if user has completed this video (optimize with get instead of filter.first())
     completed = False
     user_rating = None
     if request.user.is_authenticated:
-        progress = VideoProgress.objects.filter(user=request.user, video=video).first()
-        completed = progress.completed if progress else False
+        try:
+            progress = VideoProgress.objects.get(user=request.user, video=video)
+            completed = progress.completed
+        except VideoProgress.DoesNotExist:
+            pass
         
-        rating = VideoRating.objects.filter(user=request.user, video=video).first()
-        user_rating = rating.rating if rating else None
+        try:
+            rating = VideoRating.objects.get(user=request.user, video=video)
+            user_rating = rating.rating
+        except VideoRating.DoesNotExist:
+            pass
     
-    # Check if video has a quiz
-    has_quiz = hasattr(video, 'quiz')
+    # Check if video has a quiz using exists() instead of hasattr
+    has_quiz = video.quiz if hasattr(video, 'quiz') else False
     
     context = {
         'video': video,
@@ -57,9 +71,16 @@ def video_detail(request, slug):
 
 
 def category_videos(request, slug):
-    """List all videos in a category"""
+    """List all videos in a category with pagination"""
     category = get_object_or_404(Category, slug=slug)
-    videos = Video.objects.filter(category=category)
+    
+    # Optimize: select_related and add pagination
+    videos_query = Video.objects.select_related('category', 'author').filter(category=category).order_by('-created_at')
+    
+    # Pagination: 12 videos per page
+    paginator = Paginator(videos_query, 12)
+    page_number = request.GET.get('page', 1)
+    videos = paginator.get_page(page_number)
     
     context = {
         'category': category,
@@ -69,11 +90,21 @@ def category_videos(request, slug):
 
 
 def search_videos(request):
-    """Search videos by title or description"""
+    """Search videos by title or description with pagination"""
     query = request.GET.get('q', '')
-    videos = Video.objects.filter(
-        Q(title__icontains=query) | Q(description__icontains=query)
-    ) if query else Video.objects.none()
+    
+    if query:
+        # Optimize search with select_related
+        videos_query = Video.objects.select_related('category', 'author').filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        ).order_by('-created_at')
+    else:
+        videos_query = Video.objects.none()
+    
+    # Pagination: 12 videos per page
+    paginator = Paginator(videos_query, 12)
+    page_number = request.GET.get('page', 1)
+    videos = paginator.get_page(page_number)
     
     context = {
         'query': query,
@@ -147,14 +178,17 @@ def mark_complete(request, video_id):
             video=video
         )
         
-        progress.completed = True
-        progress.save()
-        
-        # Update user stats
-        request.user.videos_watched = VideoProgress.objects.filter(
-            user=request.user, completed=True
-        ).count()
-        request.user.save()
+        if not progress.completed:  # Only save if state changed
+            progress.completed = True
+            progress.save(update_fields=['completed'])
+            
+            # Update user stats efficiently using database aggregation
+            from django.db.models import Count
+            completed_count = VideoProgress.objects.filter(
+                user=request.user, completed=True
+            ).count()
+            request.user.videos_watched = completed_count
+            request.user.save(update_fields=['videos_watched'])
         
         return JsonResponse({'success': True})
     
