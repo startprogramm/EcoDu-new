@@ -1,0 +1,63 @@
+/* Profile Page Custom Styles - Match Website Theme */
+
+/* Fix navbar positioning */
+header {
+    top: 0;
+}
+
+/* Add spacing for fixed header */
+body {
+    padding-top: 80px;
+}
+
+/* Match website color scheme - override Bootstrap defaults */
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    background: #31473A !important;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.btn-success {
+    background: greenyellow !important;
+    border-color: greenyellow !important;
+    color: #31473A !important;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background: #31473A !important;
+    border-color: #31473A !important;
+    color: greenyellow !important;
+}
+
+.bg-success {
+    background-color: #31473A !important;
+}
+
+.text-success {
+    color: #31473A !important;
+}
+
+.badge.bg-success {
+    background-color: #31473A !important;
+}
+
+.badge.bg-warning {
+    background-color: #7C8363 !important;
+}
+
+.badge.bg-info {
+    background-color: #31473A !important;
+}
+
+.list-group-item:hover {
+    background-color: #EDF4F2;
+}
+
+.rounded-circle.bg-success {
+    background-color: #31473A !important;
+}

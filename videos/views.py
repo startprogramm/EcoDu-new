@@ -26,8 +26,8 @@ def video_detail(request, slug):
     video.views += 1
     video.save(update_fields=['views'])
     
-    # Get related videos from same category
-    related_videos = Video.objects.filter(category=video.category).exclude(id=video.id)[:4]
+    # Get related videos (show other videos since each has unique category)
+    related_videos = Video.objects.exclude(id=video.id).order_by('-created_at')[:4]
     
     # Get comments
     comments = video.comments.filter(parent=None).order_by('-created_at')
