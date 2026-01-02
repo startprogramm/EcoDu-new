@@ -6,4 +6,7 @@ set -o errexit
 echo "🗄️ Running database migrations..."
 python manage.py migrate --no-input
 
+echo "📝 Populating sample data..."
+python populate_data.py
+
 echo "✅ Release phase completed!"
