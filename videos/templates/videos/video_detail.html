@@ -144,7 +144,7 @@
                 <a href="{% url 'videos:video_detail' related.slug %}" class="related-item">
                     <div class="related-thumbnail">
                         {% if related.thumbnail %}
-                        <img src="{% static related.thumbnail %}" alt="{{ related.title }}">
+                        <img src="{{ related.thumbnail.url }}" alt="{{ related.title }}">
                         {% else %}
                         <img src="{% static 'plastik.jpg' %}" alt="{{ related.title }}">
                         {% endif %}
