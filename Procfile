@@ -1,1 +1,2 @@
-web: gunicorn ecodu_project.wsgi --log-file -
+web: gunicorn ecodu_project.wsgi:application --log-file -
+

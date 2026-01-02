@@ -47,7 +47,7 @@ This guide will walk you through deploying your EcoDu application to Render.com 
    - **Root Directory**: Leave empty
    - **Runtime**: `Python 3`
    - **Build Command**: `./build.sh`
-   - **Start Command**: `gunicorn ecodu_project.wsgi:application`
+   - **Start Command**: `gunicorn ecodu_project.wsgi:application --bind 0.0.0.0:$PORT`
 
    **Plan:**
    - Select **Free** tier
