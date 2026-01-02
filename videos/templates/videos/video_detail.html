@@ -144,7 +144,7 @@
                 <a href="{% url 'videos:video_detail' related.slug %}" class="related-item">
                     <div class="related-thumbnail">
                         {% if related.thumbnail %}
-                        <img src="{{ related.thumbnail.url }}" alt="{{ related.title }}">
+                        <img src="{% static related.thumbnail %}" alt="{{ related.title }}">
                         {% else %}
                         <img src="{% static 'plastik.jpg' %}" alt="{{ related.title }}">
                         {% endif %}
@@ -209,8 +209,8 @@
         // Pass Django data to JavaScript
         const VIDEO_ID = {{ video.id }};
         const VIDEO_SLUG = "{{ video.slug }}";
-        const HAS_QUIZ = {{ has_quiz|yesno:"true,false" }};
-        const IS_AUTHENTICATED = {{ user.is_authenticated|yesno:"true,false" }};
+        const HAS_QUIZ = {{ has_quiz| yesno: "true,false" }};
+        const IS_AUTHENTICATED = {{ user.is_authenticated| yesno: "true,false" }};
         const CSRF_TOKEN = "{{ csrf_token }}";
     </script>
     <script src="{% static 'script.js' %}"></script>
