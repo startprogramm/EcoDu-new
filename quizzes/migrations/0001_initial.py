@@ -9,6 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('videos', '0001_initial'),
     ]
 
     operations = [
