@@ -31,11 +31,49 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 # ALLOWED_HOSTS configuration
 # In production, set via environment variable (comma-separated domains)
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_ENV.split(',') if host.strip()]
+
+# Automatically allow Railway domains
+if not DEBUG:
+    # Get Railway's public domain from environment
+    railway_domain = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
+    railway_static_url = os.environ.get('RAILWAY_STATIC_URL', '')
+    
+    if railway_domain and railway_domain not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(railway_domain)
+    if railway_static_url:
+        # Extract domain from URL
+        from urllib.parse import urlparse
+        parsed = urlparse(railway_static_url)
+        if parsed.netloc and parsed.netloc not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(parsed.netloc)
 
 # CSRF Trusted Origins (required for Django 4.0+ with HTTPS)
 # Set via environment variable in production
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if os.environ.get('CSRF_TRUSTED_ORIGINS') else []
+CSRF_TRUSTED_ORIGINS_ENV = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+if CSRF_TRUSTED_ORIGINS_ENV:
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_ENV.split(',') if origin.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = []
+
+# Automatically add Railway HTTPS origins
+if not DEBUG:
+    # Get the Railway provided domain from environment
+    railway_domain = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
+    railway_static_url = os.environ.get('RAILWAY_STATIC_URL', '')
+    
+    if railway_domain:
+        origin = f'https://{railway_domain}'
+        if origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
+    
+    if railway_static_url and railway_static_url not in CSRF_TRUSTED_ORIGINS:
+        # Ensure it starts with https://
+        if not railway_static_url.startswith('http'):
+            railway_static_url = f'https://{railway_static_url}'
+        if railway_static_url not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(railway_static_url)
 
 
 # Application definition
