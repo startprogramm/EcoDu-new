@@ -38,16 +38,12 @@ ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_ENV.split(',') if host.s
 if not DEBUG:
     # Get Railway's public domain from environment
     railway_domain = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
-    railway_static_url = os.environ.get('RAILWAY_STATIC_URL', '')
-    
     if railway_domain and railway_domain not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(railway_domain)
-    if railway_static_url:
-        # Extract domain from URL
-        from urllib.parse import urlparse
-        parsed = urlparse(railway_static_url)
-        if parsed.netloc and parsed.netloc not in ALLOWED_HOSTS:
-            ALLOWED_HOSTS.append(parsed.netloc)
+        print(f"[INFO] Added Railway domain to ALLOWED_HOSTS: {railway_domain}")
+else:
+    # In development, allow all hosts
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '*'])
 
 # CSRF Trusted Origins (required for Django 4.0+ with HTTPS)
 # Set via environment variable in production
