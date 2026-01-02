@@ -33,7 +33,16 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']  # Allow all hosts for now to debug
 
 # CSRF Trusted Origins (required for Django 4.0+ with HTTPS)
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = [
+    'https://ecodu.online',
+    'https://www.ecodu.online',
+    'https://*.up.railway.app',
+    'http://localhost:8000',
+]
+
+# CSRF settings
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_HTTPONLY = False  # Templates need access to csrf token
 
 
 # Application definition
