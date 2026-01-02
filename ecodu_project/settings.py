@@ -33,6 +33,10 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 # In production, set via environment variable (comma-separated domains)
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# CSRF Trusted Origins (required for Django 4.0+ with HTTPS)
+# Set via environment variable in production
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if os.environ.get('CSRF_TRUSTED_ORIGINS') else []
+
 
 # Application definition
 
