@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-vi^zti!9o(ovqn$8^blz$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Set DEBUG=False in production via environment variable
-DEBUG = True  # Temporarily enabled for debugging 500 errors
+DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 # ALLOWED_HOSTS configuration
 ALLOWED_HOSTS = ['*']  # Allow all hosts for now to debug
@@ -168,6 +168,21 @@ STORAGES = {
 # Media files (uploads)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Optional: AWS S3 Storage for uploaded files (set AWS_STORAGE_BUCKET_NAME to enable)
+# This ensures uploaded files persist across deployments on Railway
+if os.environ.get('AWS_STORAGE_BUCKET_NAME'):
+    # Install with: pip install boto3 django-storages
+    STORAGES['default'] = {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        'OPTIONS': {
+            'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
+            'access_key': os.environ.get('AWS_ACCESS_KEY_ID'),
+            'secret_key': os.environ.get('AWS_SECRET_ACCESS_KEY'),
+            'region_name': os.environ.get('AWS_S3_REGION_NAME', 'us-east-1'),
+        }
+    }
+    MEDIA_URL = f"https://{os.environ.get('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com/media/"
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
