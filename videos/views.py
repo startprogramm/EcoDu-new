@@ -56,8 +56,12 @@ def video_detail(request, slug):
         except VideoRating.DoesNotExist:
             pass
     
-    # Check if video has a quiz using exists() instead of hasattr
-    has_quiz = video.quiz if hasattr(video, 'quiz') else False
+    # Check if video has a quiz - use try/except to handle RelatedObjectDoesNotExist
+    has_quiz = False
+    try:
+        has_quiz = video.quiz is not None
+    except:
+        has_quiz = False
     
     context = {
         'video': video,
