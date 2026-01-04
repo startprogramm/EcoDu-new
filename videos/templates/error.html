@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Error - EcoDu{% endblock %}
+
+{% block content %}
+<div class="error-page" style="padding: 50px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="font-size: 3em; color: #e74c3c; margin-bottom: 20px;">⚠️ Something went wrong</h1>
+        
+        <p style="font-size: 1.2em; color: #555; margin-bottom: 30px;">
+            We encountered an unexpected error. Our team has been notified.
+        </p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <p style="margin: 0;">
+                <strong>Error Code:</strong> {{ status_code }}<br>
+                <strong>Error Message:</strong> {{ message }}<br>
+            </p>
+        </div>
+        
+        <a href="{% url 'videos:home' %}" class="button" style="padding: 12px 30px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">
+            Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     # Third party
     'crispy_forms',
     'crispy_bootstrap5',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -176,23 +178,24 @@ STORAGES = {
 }
 
 # Media files (uploads)
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# Optional: AWS S3 Storage for uploaded files (set AWS_STORAGE_BUCKET_NAME to enable)
-# This ensures uploaded files persist across deployments on Railway
-if os.environ.get('AWS_STORAGE_BUCKET_NAME'):
-    # Install with: pip install boto3 django-storages
+# Use Cloudinary for media storage (set CLOUDINARY_URL environment variable)
+# If CLOUDINARY_URL is set, use Cloudinary; otherwise use local storage
+if os.environ.get('CLOUDINARY_URL'):
+    # Cloudinary configuration for uploaded files
+    import cloudinary
+    cloudinary.config(
+        cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        api_key=os.environ.get('CLOUDINARY_API_KEY'),
+        api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    )
     STORAGES['default'] = {
-        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-        'OPTIONS': {
-            'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-            'access_key': os.environ.get('AWS_ACCESS_KEY_ID'),
-            'secret_key': os.environ.get('AWS_SECRET_ACCESS_KEY'),
-            'region_name': os.environ.get('AWS_S3_REGION_NAME', 'us-east-1'),
-        }
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
-    MEDIA_URL = f"https://{os.environ.get('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com/media/"
+    MEDIA_URL = 'https://res.cloudinary.com/' + os.environ.get('CLOUDINARY_CLOUD_NAME') + '/image/upload/'
+else:
+    # Fallback to local storage
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
