@@ -183,8 +183,8 @@ header .navbar {
 }
 
 .navbar .nav-menu .login-button:hover {
-    background: #31473A;
-    color: greenyellow;
+    background: white;
+    color: #31473A;
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 4px 15px rgba(173, 255, 47, 0.5);
 }

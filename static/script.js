@@ -11,7 +11,14 @@ menuCloseButton.addEventListener("click", () =>
 menuOpenButton.click());
 
 navLinks.forEach(link => {
-    link.addEventListener("click", () => menuOpenButton.click());
+    link.addEventListener("click", (e) => {
+        // Don't prevent default for actual links, only close menu
+        // Check if it's an internal anchor link (#) before closing menu
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+            menuOpenButton.click();
+        }
+    });
 });
 
 const swiper = new Swiper('.slider-wrapper', {
