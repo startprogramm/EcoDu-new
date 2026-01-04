@@ -27,7 +27,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-vi^zti!9o(ovqn$8^blz$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Set DEBUG=False in production via environment variable
-DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
+# TEMPORARILY SET TO TRUE FOR DEBUGGING - CHANGE BACK AFTER FIXING ERRORS
+DEBUG = True  # os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 # ALLOWED_HOSTS configuration
 ALLOWED_HOSTS = ['*']  # Allow all hosts for now to debug
