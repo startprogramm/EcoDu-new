@@ -27,8 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-vi^zti!9o(ovqn$8^blz$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Set DEBUG=False in production via environment variable
-# TEMPORARILY SET TO TRUE FOR DEBUGGING - CHANGE BACK AFTER FIXING ERRORS
-DEBUG = True  # os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # ALLOWED_HOSTS configuration
 ALLOWED_HOSTS = ['*']  # Allow all hosts for now to debug
@@ -64,8 +63,6 @@ INSTALLED_APPS = [
     # Third party
     'crispy_forms',
     'crispy_bootstrap5',
-    'cloudinary_storage',
-    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -178,24 +175,9 @@ STORAGES = {
 }
 
 # Media files (uploads)
-# Use Cloudinary for media storage (set CLOUDINARY_URL environment variable)
-# If CLOUDINARY_URL is set, use Cloudinary; otherwise use local storage
-if os.environ.get('CLOUDINARY_URL'):
-    # Cloudinary configuration for uploaded files
-    import cloudinary
-    cloudinary.config(
-        cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-        api_key=os.environ.get('CLOUDINARY_API_KEY'),
-        api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
-    )
-    STORAGES['default'] = {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
-    }
-    MEDIA_URL = 'https://res.cloudinary.com/' + os.environ.get('CLOUDINARY_CLOUD_NAME') + '/image/upload/'
-else:
-    # Fallback to local storage
-    MEDIA_URL = 'media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+# Uses persistent volume on Railway - files survive restarts
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
