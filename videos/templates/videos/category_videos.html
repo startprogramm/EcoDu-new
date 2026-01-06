@@ -53,8 +53,16 @@
                 <li class="lessons-item">
                     <a href="{% url 'videos:video_detail' video.slug %}" class="video-link">
                         <div class="video-thumbnail">
-                            {% if video.thumbnail_file %}
-                            <img src="{% static video.thumbnail_file %}" alt="{{ video.title }}">
+                            {% if video.title == 'Yovvoyi tabiat' %}
+                            <img src="{% static 'yovvoyitabiat.jpg' %}" alt="{{ video.title }}">
+                            {% elif video.title == "O'rmonlar yo'qolishi" %}
+                            <img src="{% static "o'rmonlar.jpg" %}" alt="{{ video.title }}">
+                            {% elif video.title == 'Suv ifloslanishi' %}
+                            <img src="{% static 'suv.png' %}" alt="{{ video.title }}">
+                            {% elif video.title == 'Havo ifloslanishi' %}
+                            <img src="{% static 'havo.jpg' %}" alt="{{ video.title }}">
+                            {% elif video.title == 'Plastik ifloslanish' %}
+                            <img src="{% static 'plastik.jpg' %}" alt="{{ video.title }}">
                             {% else %}
                             <img src="{% static 'plastik.jpg' %}" alt="{{ video.title }}">
                             {% endif %}
