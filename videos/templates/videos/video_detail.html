@@ -143,8 +143,16 @@
                 {% for related in related_videos %}
                 <a href="{% url 'videos:video_detail' related.slug %}" class="related-item">
                     <div class="related-thumbnail">
-                        {% if related.thumbnail %}
-                        <img src="{{ related.thumbnail.url }}" alt="{{ related.title }}">
+                        {% if related.title == 'Yovvoyi tabiat' %}
+                        <img src="{% static 'yovvoyitabiat.jpg' %}" alt="{{ related.title }}">
+                        {% elif related.title == "O'rmonlar yo'qolishi" %}
+                        <img src="{% static "o'rmonlar.jpg" %}" alt="{{ related.title }}">
+                        {% elif related.title == 'Suv ifloslanishi' %}
+                        <img src="{% static 'suv.png' %}" alt="{{ related.title }}">
+                        {% elif related.title == 'Havo ifloslanishi' %}
+                        <img src="{% static 'havo.jpg' %}" alt="{{ related.title }}">
+                        {% elif related.title == 'Plastik ifloslanish' %}
+                        <img src="{% static 'plastik.jpg' %}" alt="{{ related.title }}">
                         {% else %}
                         <img src="{% static 'plastik.jpg' %}" alt="{{ related.title }}">
                         {% endif %}
