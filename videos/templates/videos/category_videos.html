@@ -53,8 +53,8 @@
                 <li class="lessons-item">
                     <a href="{% url 'videos:video_detail' video.slug %}" class="video-link">
                         <div class="video-thumbnail">
-                            {% if video.thumbnail %}
-                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                            {% if video.thumbnail_file %}
+                            <img src="{% static video.thumbnail_file %}" alt="{{ video.title }}">
                             {% else %}
                             <img src="{% static 'plastik.jpg' %}" alt="{{ video.title }}">
                             {% endif %}

@@ -31,6 +31,7 @@ class Video(models.Model):
     description = models.TextField()
     youtube_url = models.URLField(help_text="YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)")
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
+    thumbnail_file = models.CharField(max_length=100, blank=True, help_text="Static thumbnail filename (e.g., 'havo.jpg')")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='videos', db_index=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='authored_videos')
     author_name = models.CharField(max_length=100, blank=True)
