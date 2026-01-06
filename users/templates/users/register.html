@@ -44,18 +44,18 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="id_first_name">Ism</label>
+                    <label for="id_first_name">Ism (Ixtiyoriy)</label>
                     <input id="id_first_name" name="first_name" type="text" autocomplete="given-name"
-                        value="{{ form.first_name.value|default:'' }}" />
+                        placeholder="Ism..." value="{{ form.first_name.value|default:'' }}" />
                     {% if form.first_name.errors %}
                     <span class="error-text">{{ form.first_name.errors.0 }}</span>
                     {% endif %}
                 </div>
 
                 <div class="input-group">
-                    <label for="id_last_name">Familiya</label>
+                    <label for="id_last_name">Familiya (Ixtiyoriy)</label>
                     <input id="id_last_name" name="last_name" type="text" autocomplete="family-name"
-                        value="{{ form.last_name.value|default:'' }}" />
+                        placeholder="Familiya..." value="{{ form.last_name.value|default:'' }}" />
                     {% if form.last_name.errors %}
                     <span class="error-text">{{ form.last_name.errors.0 }}</span>
                     {% endif %}
